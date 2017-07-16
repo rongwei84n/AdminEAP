@@ -230,17 +230,17 @@
                     </webAppConfig>
                 </configuration>
             </plugin>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
-                    <!-- 注意此处的url -->
-                    <url>http://localhost:8080/manager/text</url><!--部署到本地tomcat7-->
-                    <path>/${project.name}</path>  <!-- 此处的名字是项目发布的工程名 -->
-                    <username>admin</username><!--settings.xml文件已配置，此处可不配-->
-                    <password>123</password><!--settings.xml文件已配置，此处可不配-->
+                    注意此处的url
+                    <url>http://localhost:8080/manager/text</url>部署到本地tomcat7
+                    <path>/${project.name}</path>  此处的名字是项目发布的工程名
+                    <username>admin</username>settings.xml文件已配置，此处可不配
+                    <password>123</password>settings.xml文件已配置，此处可不配
                 </configuration>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 </project>

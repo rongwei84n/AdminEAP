@@ -54,19 +54,23 @@ public class LoginController {
 
     @RequestMapping(value = "/login")
     private String doLogin(HttpServletRequest request, Model model) {
+    	System.out.println("LoginController begin..");
         model.addAttribute("oAuthServices", oAuthServices.getAllOAuthServices());
         //已经登录过，直接进入主页
         Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.isAuthenticated()) {
             boolean isAuthorized = Boolean.valueOf(subject.getSession().getAttribute("isAuthorized").toString());
-            if (isAuthorized)
-                return MAIN_PAGE;
+            if (isAuthorized) {
+            	System.out.println("LoginController begin 2..");
+            	return MAIN_PAGE;
+            }
         }
         String userName = request.getParameter("userName");
-        LOGGER.error("userName; " + userName);
+        System.out.println("userName; " + userName);
         
         //默认首页，第一次进来
         if (StrUtil.isEmpty(userName)) {
+        	System.out.println("LoginController begin 3..");
             return LOGIN_PAGE;
         }
         

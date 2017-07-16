@@ -18,7 +18,7 @@ public class SystemFilter implements Filter {
             ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        System.out.println(request.getRequestURL());
+        System.out.println("SystemFilter -- " + request.getRequestURL());
         String basePath = request.getContextPath();
         request.setAttribute("basePath", basePath);
         filterChain.doFilter(request, servletResponse);
