@@ -42,8 +42,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) {
-        if (authcToken == null)
+        if (authcToken == null) {
             throw new AuthenticationException("parameter token is null");
+        }
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         // 校验用户名密码
         String password=String.copyValueOf(token.getPassword());

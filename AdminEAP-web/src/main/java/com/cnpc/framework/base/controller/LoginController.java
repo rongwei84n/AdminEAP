@@ -65,7 +65,6 @@ public class LoginController {
             }
         }
         String userName = request.getParameter("userName");
-        logger.debug("userName [{}] ", userName);
         
         //默认首页，第一次进来
         if (StrUtil.isEmpty(userName)) {
@@ -74,6 +73,8 @@ public class LoginController {
         }
         
         String password = request.getParameter("password");
+        
+        logger.debug("userName [{}] password [{}]", userName, password);
         //密码加密+加盐
         password = EncryptUtil.getPassword(password, userName);
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
