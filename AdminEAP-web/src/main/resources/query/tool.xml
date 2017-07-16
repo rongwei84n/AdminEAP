@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryContext xmlns="http://www.example.org/query" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/query query.xsd ">
+	<!-- 文章列表 -->
+	<query id="markdown_list" key="id" tableName="文章列表" className="com.cnpc.tool.markdown.entity.MarkDown"
+		pageSize="10"  widthType="px" order="updateDateTime desc">
+		<column key="rowIndex" header="序号" width="50" allowSort="false"/>
+		<column key="id" header="id" hidden="true"/>
+		<column key="version" header="version" hidden="true"/>
+		<column key="title" header="文章标题" operator="like" width="100" allowSort="true" />
+		<column key="keywords" header="关键字" operator="eq" width="150" />
+	    <column key="operator" id="id" header="操作" align="center" fnRender="fnRenderOperator"/>
+	</query>
+</queryContext>
