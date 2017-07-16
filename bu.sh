@@ -1,1 +1,1 @@
-rm -fr  AdminEAP-web/target/ && mvn clean package && cp ~/Documents/1_work_project/AdminEAP/AdminEAP-web/target/AdminEAP.war ~/Documents/1_work_project/apache-tomcat-9.0.0.M22-src/output/build/webapps/
+rm -fr  AdminEAP-web/target/ && mvn clean package && cp ~/Documents/1_work_project/auts-proj/admin-manager-proj-demo/AdminEAP-web/target/AdminEAP.war ~/Documents/1_work_project/apache-tomcat-9.0.0.M22-src/output/build/webapps/
