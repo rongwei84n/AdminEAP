@@ -47,22 +47,21 @@ public class LoginController {
     @Resource
     OAuthUserService oAuthUserService;
 
-
     private final static String MAIN_PAGE = PropertiesUtil.getValue("page.main");
     private final static String LOGIN_PAGE = PropertiesUtil.getValue("page.login");
     private final static String REGISTER_PAGE = PropertiesUtil.getValue("page.register");
 
     @RequestMapping(value = "/login")
     private String doLogin(HttpServletRequest request, Model model) {
-    	logger.debug("LoginController begin..");
+        logger.debug("LoginController begin..");
         model.addAttribute("oAuthServices", oAuthServices.getAllOAuthServices());
         //已经登录过，直接进入主页
         Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.isAuthenticated()) {
             boolean isAuthorized = Boolean.valueOf(subject.getSession().getAttribute("isAuthorized").toString());
             if (isAuthorized) {
-            	System.out.println("LoginController begin 2..");
-            	return MAIN_PAGE;
+                System.out.println("LoginController begin 2..");
+                return MAIN_PAGE;
             }
         }
         String userName = request.getParameter("userName");
@@ -70,7 +69,7 @@ public class LoginController {
         
         //默认首页，第一次进来
         if (StrUtil.isEmpty(userName)) {
-        	logger.info("userName is empty, return login page");
+            logger.info("userName is empty, return login page");
             return LOGIN_PAGE;
         }
         
@@ -103,31 +102,31 @@ public class LoginController {
         } catch (IncorrectCredentialsException e) {
             msg = "登录密码错误. Password for account " + token.getPrincipal() + " was incorrect";
             model.addAttribute("message", new ResultCode("2", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (ExcessiveAttemptsException e) {
             msg = "登录失败次数过多";
             model.addAttribute("message", new ResultCode("3", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (LockedAccountException e) {
             msg = "帐号已被锁定. The account for username " + token.getPrincipal() + " was locked.";
             model.addAttribute("message", new ResultCode("1", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (DisabledAccountException e) {
             msg = "帐号已被禁用. The account for username " + token.getPrincipal() + " was disabled.";
             model.addAttribute("message", new ResultCode("1", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (ExpiredCredentialsException e) {
             msg = "帐号已过期. the account for username " + token.getPrincipal() + "  was expired.";
             model.addAttribute("message", new ResultCode("1", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (UnknownAccountException e) {
             msg = "帐号不存在. There is no user with username of " + token.getPrincipal();
             model.addAttribute("message", new ResultCode("1", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         } catch (UnauthorizedException e) {
             msg = "您没有得到相应的授权！" + e.getMessage();
             model.addAttribute("message", new ResultCode("1", msg));
-            logger.error(msg);
+            logger.error(msg, e);
         }
         logger.info("LoginController doLogin done..");
         return LOGIN_PAGE;
