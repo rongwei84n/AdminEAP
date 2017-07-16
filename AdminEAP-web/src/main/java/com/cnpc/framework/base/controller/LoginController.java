@@ -33,7 +33,7 @@ import java.util.Set;
 @Controller
 public class LoginController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Resource
     private RoleService roleService;
@@ -54,7 +54,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login")
     private String doLogin(HttpServletRequest request, Model model) {
-    	System.out.println("LoginController begin..");
+    	logger.debug("LoginController begin..");
         model.addAttribute("oAuthServices", oAuthServices.getAllOAuthServices());
         //已经登录过，直接进入主页
         Subject subject = SecurityUtils.getSubject();
@@ -66,11 +66,11 @@ public class LoginController {
             }
         }
         String userName = request.getParameter("userName");
-        System.out.println("userName; " + userName);
+        logger.debug("userName [{}] ", userName);
         
         //默认首页，第一次进来
         if (StrUtil.isEmpty(userName)) {
-        	System.out.println("LoginController begin 3..");
+        	logger.info("userName is empty, return login page");
             return LOGIN_PAGE;
         }
         
@@ -93,10 +93,9 @@ public class LoginController {
                     msg = "您没有得到相应的授权！";
                     model.addAttribute("message", new ResultCode("1", msg));
                     subject.getSession().setAttribute("isAuthorized", false);
-                    LOGGER.error(msg);
+                    logger.error(msg);
                     return LOGIN_PAGE;
                 }
-
             } else {
                 return LOGIN_PAGE;
             }
@@ -104,32 +103,33 @@ public class LoginController {
         } catch (IncorrectCredentialsException e) {
             msg = "登录密码错误. Password for account " + token.getPrincipal() + " was incorrect";
             model.addAttribute("message", new ResultCode("2", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (ExcessiveAttemptsException e) {
             msg = "登录失败次数过多";
             model.addAttribute("message", new ResultCode("3", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (LockedAccountException e) {
             msg = "帐号已被锁定. The account for username " + token.getPrincipal() + " was locked.";
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (DisabledAccountException e) {
             msg = "帐号已被禁用. The account for username " + token.getPrincipal() + " was disabled.";
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (ExpiredCredentialsException e) {
             msg = "帐号已过期. the account for username " + token.getPrincipal() + "  was expired.";
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (UnknownAccountException e) {
             msg = "帐号不存在. There is no user with username of " + token.getPrincipal();
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         } catch (UnauthorizedException e) {
             msg = "您没有得到相应的授权！" + e.getMessage();
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
         }
+        logger.info("LoginController doLogin done..");
         return LOGIN_PAGE;
     }
 
@@ -173,7 +173,7 @@ public class LoginController {
         }catch (Exception e){
             String msg = "连接"+type+"服务器异常. 错误信息为："+e.getMessage();
             model.addAttribute("message", new ResultCode("1", msg));
-            LOGGER.error(msg);
+            logger.error(msg);
             return LOGIN_PAGE;
         }
 
@@ -225,7 +225,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/oauth/checkUnique", method = RequestMethod.POST)
     @ResponseBody
-    public Map checkExist(String loginName, String userId) {
+    public Map<String, Boolean> checkExist(String loginName, String userId) {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         User user = userService.getUserByLoginName(loginName);
         //用户不存在，校验有效
