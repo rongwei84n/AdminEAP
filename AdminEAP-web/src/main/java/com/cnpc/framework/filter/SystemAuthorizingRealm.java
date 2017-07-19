@@ -50,6 +50,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         String password=String.copyValueOf(token.getPassword());
         User user= userService.getUserByLoginName(token.getUsername());
         if (user!=null) {
+        	System.out.println("password: " + password + 
+        			" user.getPassword(): " + user.getPassword() + 
+        			" isNeedPassword(): " + isNeedPassword());
             if(!password.equals(user.getPassword())&& isNeedPassword()){
                 throw new IncorrectCredentialsException();
             }
@@ -84,9 +87,10 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
     //是否需要校验密码登录，用于开发环境 0默认为开发环境，其他为正式环境（1，或者不配）
     public boolean isNeedPassword(){
          String version=PropertiesUtil.getValue("system.version");
-        if("0".equals(version))
-            return false;
-        else
-            return true;
+        if("0".equals(version)) {
+        	return false;
+        } else {
+        	return true;
+        }
     }
 }
